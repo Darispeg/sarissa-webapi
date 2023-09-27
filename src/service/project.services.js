@@ -1,12 +1,12 @@
 const Project = require('../models/project.model');
 
 async function listPorjects() {
-    const projects = await Project.find().populate(['organizer', 'members']);
+    const projects = await Project.find().populate(['organizer', 'members', 'tasks']);
     return projects;
 }
 
 async function findByProjectId(id) {
-    return Project.findById(id).populate(['organizer', 'members']);
+    return Project.findById(id).populate(['organizer', 'members', 'tasks']);
 }
 
 async function saveProject(project) {
@@ -17,7 +17,7 @@ async function saveProject(project) {
     newProject.created = nowDate.toISOString().slice(0, 10);
     newProject.modified = nowDate.toISOString().slice(0, 10);
 
-    await newProject.save().then(t => t.populate(['organizer', 'members'])).then(t => t);
+    await newProject.save().then(t => t.populate(['organizer', 'members', 'tasks'])).then(t => t);
 
     return newProject;
 }
@@ -27,7 +27,7 @@ async function updateProject(id, project) {
     
     const projectUpdated = await Project.findByIdAndUpdate(id, {
         $set: project
-    }, { new : true }).then(t => t.populate(['organizer', 'members'])).then(t => t);
+    }, { new : true }).then(t => t.populate(['organizer', 'members', 'tasks'])).then(t => t);
 
     return projectUpdated;
 }
@@ -36,4 +36,12 @@ async function deleteProject(id) {
     return await Project.findByIdAndDelete(id)
 }
 
-module.exports = { listPorjects, findByProjectId, saveProject, updateProject, deleteProject };
+async function assignTask(projectId, task) {
+    const projectUpdated = await Project.findByIdAndUpdate(projectId, {
+        $push : { tasks : task }
+    }, { new : true }).then(t => t.populate(['organizer', 'members', 'tasks'])).then(t => t);
+
+    return projectUpdated;
+}
+
+module.exports = { listPorjects, findByProjectId, saveProject, updateProject, deleteProject, assignTask };

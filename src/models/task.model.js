@@ -3,10 +3,18 @@ const { Schema, model } = require('mongoose');
 const TaskSchema = new Schema({
     title : { type: String, required : true },
     description : { type: String },
+    parent : { 
+        type: Schema.Types.ObjectId, 
+        ref: 'Task', 
+        require : false
+    },
     assigned_users : [{ 
         type: Schema.Types.ObjectId, 
         ref: 'User' 
     }],
+    start_date : {
+        type : String
+    },
     task_completion : {
         target_completion : { type: String, default : undefined },
         actual_completion : { type: String, default : undefined }

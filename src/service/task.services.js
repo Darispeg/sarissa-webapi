@@ -1,23 +1,27 @@
+const { assignTask } = require('../service/project.services');
+
 const Task = require('../models/task.model');
 
 async function listTasks() {
-    const tasks = await Task.find().populate('assigned_users');
+    const tasks = await Task.find().populate(['assigned_users']);
     return tasks;
 }
 
 async function findByTaskId(id) {
-    return Task.findById(id).populate('assigned_users');
+    return Task.findById(id).populate(['assigned_users']);
 }
 
 async function saveTask(task) {
-    const { title, description, assigned_users, task_completion, root_cause, source_action, progress, status } = task;
-    const newTask = new Task({ title, description, assigned_users, task_completion, root_cause, source_action, progress, status });
+    const { projectId ,title, description, parent, assigned_users, start_date, task_completion, root_cause, source_action, progress, status } = task;
+    const newTask = new Task({ title, description, parent, assigned_users, start_date, task_completion, root_cause, source_action, progress, status });
 
     const nowDate = new Date();
     newTask.created = nowDate.toISOString().slice(0, 10);
     newTask.modified = nowDate.toISOString().slice(0, 10);
 
-    await newTask.save().then(t => t.populate('assigned_users')).then(t => t);
+    await newTask.save().then(t => t.populate(['assigned_users'])).then(t => t);
+
+    assignTask(projectId, newTask.id);
 
     return newTask;
 }
@@ -27,7 +31,7 @@ async function updateTask(id, task) {
     
     const taskUpdated = await Task.findByIdAndUpdate(id, {
         $set: task
-    }, { new : true }).then(t => t.populate('assigned_users')).then(t => t);
+    }, { new : true }).then(t => t.populate(['assigned_users'])).then(t => t);
 
     return taskUpdated;
 }

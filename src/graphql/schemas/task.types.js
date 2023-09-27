@@ -3,9 +3,11 @@ const { gql } = require('apollo-server-express')
 const taskSchema = gql `
     type Task {
         id: ID,
+        parent: ID
         title: String!
         description: String!
         assigned_users: [User]!
+        start_date : String
         task_completion: TaskCompletion!
         root_cause: String!
         source_action: String!
@@ -31,9 +33,12 @@ const taskSchema = gql `
     }
 
     input TaskInput {
+        projectId : String!
         title: String!
         description: String!
+        parent : String
         assigned_users: [ID]
+        start_date : String
         task_completion: TaskCompletionInput!
         root_cause: String!
         source_action: String!

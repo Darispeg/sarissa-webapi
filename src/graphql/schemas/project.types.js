@@ -7,6 +7,7 @@ const projectSchema = gql `
         members: [User]!
         title: String!
         description: String!
+        tasks: [Task]
         created: String!
         modified: String!
         project_completion: ProjectCompletion!

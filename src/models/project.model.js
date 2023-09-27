@@ -13,6 +13,10 @@ const ProjectSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'User' 
     }],
+    tasks : [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'Task' 
+    }],
     project_completion : {
         target_completion : { type: String, default : undefined },
         actual_completion : { type: String, default : undefined }
