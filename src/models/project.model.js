@@ -17,6 +17,10 @@ const ProjectSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'Task' 
     }],
+    solutions : [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'Solution' 
+    }],
     project_completion : {
         target_completion : { type: String, default : undefined },
         actual_completion : { type: String, default : undefined }

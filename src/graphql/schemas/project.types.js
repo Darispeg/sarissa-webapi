@@ -8,11 +8,40 @@ const projectSchema = gql `
         title: String!
         description: String!
         tasks: [Task]
+        solutions: [SolutionProblem]
         created: String!
         modified: String!
         project_completion: ProjectCompletion!
         icon: String
         status: String
+    }
+
+    type SolutionProblem {
+        id: ID,
+        organizer: User!
+        members: [ MemberSolution ]!
+        title: String!
+        description: String!
+        trigger: String!
+        created: String!
+        modified: String!
+        corrective_actions: [ ActionSolution ]
+        status: String
+    }
+
+    type MemberSolution {
+        id: ID,
+        role: String
+        member : ID,
+        validation : String
+    }
+
+    type ActionSolution {
+        id: ID,
+        why: String!
+        evidence: String
+        root_cause: Boolean
+        comment: String
     }
 
     type ProjectCompletion {

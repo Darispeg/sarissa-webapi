@@ -8,6 +8,8 @@ const { taskSchema } = require('./graphql/schemas/task.types');
 const { userResolver } = require('./graphql/resolvers/user.resolvers');
 const { projectResolver } = require('./graphql/resolvers/project.resolvers');
 const { taskResolver } = require('./graphql/resolvers/task.resolvers');
+const { solutionResolver } = require('./graphql/resolvers/solution.resolvers');
+const { solutionSchema } = require('./graphql/schemas/solution.type');
 
 const app = express();  
 app.get('/', (req, res) => res.send('WELCOME SARISA API'));
@@ -21,17 +23,20 @@ async function start() {
             ${userSchema}
             ${projectSchema}
             ${taskSchema}
+            ${solutionSchema}
         `,
         resolvers : {
             Query : {
                 ...userResolver.Query,
                 ...projectResolver.Query,
-                ...taskResolver.Query 
+                ...taskResolver.Query,
+                ...solutionResolver.Query 
             },
             Mutation : {
                 ...userResolver.Mutation,
                 ...projectResolver.Mutation,
-                ...taskResolver.Mutation
+                ...taskResolver.Mutation,
+                ...solutionResolver.Mutation
             }
         },
         playground: true,
